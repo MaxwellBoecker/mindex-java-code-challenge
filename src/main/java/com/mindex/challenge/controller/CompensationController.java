@@ -1,6 +1,8 @@
 package com.mindex.challenge.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,14 +23,44 @@ public class CompensationController {
     private CompensationService compensationService;
 
     @GetMapping("/compensation/{id}")
-    public Compensation read(@PathVariable String id) {
+    public ResponseEntity<Compensation> read(@PathVariable String id) {
         LOG.debug("Received compensation read request for [{}]", id);
 
-        return compensationService.read(id);
+        Compensation found = compensationService.read(id);
+       
+        return readResponse(found);
     }
 
     @PostMapping("/compensation")
-    public Compensation create(@RequestBody Compensation compensation) {
-        return compensationService.create(compensation);
+    public ResponseEntity<Compensation> create(@RequestBody Compensation compensation) {
+        LOG.debug("Received compensation create request for [{}]", compensation);
+
+        Compensation saved = compensationService.create(compensation);
+
+        return createResponse(saved);
+    }
+
+    private ResponseEntity<Compensation> readResponse(Compensation dbResult) {
+        if(nullDBResult(dbResult)){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return successResponse(dbResult);
+    }
+
+    private boolean nullDBResult(Compensation dbResult){
+        return dbResult == null;
+    }
+
+    private ResponseEntity<Compensation> createResponse(Compensation dbResult) {
+        if(nullDBResult(dbResult)){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return successResponse(dbResult);
+    }
+
+    private ResponseEntity<Compensation> successResponse(Compensation dbResult) {
+        return new ResponseEntity<>(dbResult, HttpStatus.OK);
     }
 }

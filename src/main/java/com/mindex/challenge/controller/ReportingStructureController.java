@@ -18,9 +18,7 @@ public class ReportingStructureController {
     public ReportingStructure read(@PathVariable String id) {
         LOG.debug("Received reportingStructure read request for id [{}]", id);
 
-        ReportingStructure reportingStructure = reportingStructureService.read(id);
-
-        return reportingStructure;
+        return reportingStructureService.read(id);
     }
 
 
