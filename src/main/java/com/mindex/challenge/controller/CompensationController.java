@@ -28,7 +28,7 @@ public class CompensationController {
 
         Compensation found = compensationService.read(id);
        
-        return readResponse(found);
+        return responseForRead(found);
     }
 
     @PostMapping("/compensation")
@@ -37,10 +37,10 @@ public class CompensationController {
 
         Compensation saved = compensationService.create(compensation);
 
-        return createResponse(saved);
+        return responseForCreate(saved);
     }
 
-    private ResponseEntity<Compensation> readResponse(Compensation dbResult) {
+    private ResponseEntity<Compensation> responseForRead(Compensation dbResult) {
         if(nullDBResult(dbResult)){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -52,7 +52,7 @@ public class CompensationController {
         return dbResult == null;
     }
 
-    private ResponseEntity<Compensation> createResponse(Compensation dbResult) {
+    private ResponseEntity<Compensation> responseForCreate(Compensation dbResult) {
         if(nullDBResult(dbResult)){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
