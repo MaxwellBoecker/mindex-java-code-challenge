@@ -3,6 +3,8 @@ package com.mindex.challenge.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.mindex.challenge.service.ReportingStructureService;
 import com.mindex.challenge.data.ReportingStructure;
@@ -15,10 +17,15 @@ public class ReportingStructureController {
     private ReportingStructureService reportingStructureService;
 
     @GetMapping("/reportingStructure/{id}")
-    public ReportingStructure read(@PathVariable String id) {
+    public ResponseEntity<ReportingStructure> read(@PathVariable String id) {
         LOG.debug("Received reportingStructure read request for id [{}]", id);
 
-        return reportingStructureService.read(id);
+        ReportingStructure reportingStructure = reportingStructureService.read(id);
+        if(reportingStructure == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(reportingStructure, HttpStatus.OK);
     }
 
 

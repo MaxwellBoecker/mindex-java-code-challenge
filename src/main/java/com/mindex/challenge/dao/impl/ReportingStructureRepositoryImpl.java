@@ -22,6 +22,9 @@ public class ReportingStructureRepositoryImpl implements ReportingStructureRepos
     public ReportingStructure findByEmployeeId(String employeeId) {
         ReportingStructure result = new ReportingStructure();
         result = addEmployeeToResult(employeeId, result);
+        if(!employeeExists(result)) {
+            return null;
+        }
 
         findAllDirectReports(result.getEmployee().getDirectReports());       
         result.setNumberOfReports(numberOfReports);
@@ -34,6 +37,10 @@ public class ReportingStructureRepositoryImpl implements ReportingStructureRepos
         Employee employee = employeeRepository.findByEmployeeId(employeeId);
         reportingStructure.setEmployee(employee);
         return reportingStructure;
+    }
+
+    private boolean employeeExists(ReportingStructure result){
+        return result.getEmployee() != null;
     }
 
     // Design Decision: Implementing the recursive functions below to expand the direct reports seemed funny at first. But the reason why I went for it was 

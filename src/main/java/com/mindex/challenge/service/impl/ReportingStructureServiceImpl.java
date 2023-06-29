@@ -20,7 +20,7 @@ public class ReportingStructureServiceImpl implements ReportingStructureService 
         LOG.debug("reading reportingStructure for employee [{}]", id);
 
         ReportingStructure reportingStructure = reportingStructureRepository.findByEmployeeId(id);
-        LOG.debug("reportingStructure: [{}]", reportingStructure); 
+        
         return reportingStructure;
     }
 
