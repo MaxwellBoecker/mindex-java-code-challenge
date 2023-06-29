@@ -1,5 +1,4 @@
 package com.mindex.challenge.data;
-import com.mindex.challenge.data.Employee;
 
 // todo, extend Employee class to get the methods?
 public class ReportingStructure {
